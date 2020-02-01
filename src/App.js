@@ -1,26 +1,57 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Container from './Container.js'
+import Aform from './Aform.js'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import books from './someBooks.js'
+
+export default class App extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      allBooks : books,
+      rentedBooks: []
+    }
+  }
+
+  exchangeBook = () => {
+    let allofTheBooks = this.state.allBooks
+    let rentalBooks = this.state.rentedBooks
+
+    rentalBooks.push(allofTheBooks.pop())
+
+    this.setState({
+      allBooks : allofTheBooks,
+      rentedBooks : rentalBooks
+    })
+  }
+
+  addBook = (book) => {
+    let allofTheBooks = this.state.allBooks
+    allofTheBooks.push(book)
+    console.log(book)
+    console.log(allofTheBooks)
+    this.setState({
+      allBooks: allofTheBooks
+    })
+  }
+
+
+
+
+
+
+
+
+  render(){
+    return (
+      <div className="App">
+        <Container handleClick={this.exchangeBook} cardsToDisplay={this.state.allBooks} name={'shelf'}></Container>
+        <Container handleClick={this.exchangeBook} cardsToDisplay={this.state.rentedBooks} name={'rental cart'}></Container>
+        <Aform handleSubmit={this.addBook}></Aform>
+      </div>
+    );
+  }
+ 
 }
-
-export default App;
